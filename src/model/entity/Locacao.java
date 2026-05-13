@@ -44,18 +44,43 @@ public class Locacao implements Calculos {
         return valorDiario;
     }
 
-    public Duration calcularPeriodoDeLocacao(){
+    public Duration calcularPeriodoDeLocacao() {
         return Duration.between(dataDeRetirada, dataDeEntrega);
     }
 
-    public Double calcularPagamentoPorHora(){
-        if (calcularPeriodoDeLocacao().toDays() < 1 && calcularPeriodoDeLocacao().toMinutes() > 1){
-            long horas = Math.round(calcularPeriodoDeLocacao().toHours()) + 1;
-            return horas * valorPorHora;
-        } else if (calcularPeriodoDeLocacao().toDays() >= 1){
-            long dias =
+    double valorPagamentoBasico = 0;
+
+    public Double calcularPagamento() {
+        if (calcularPeriodoDeLocacao().toHours() < 24) {
+            double horas = Math.ceil(calcularPeriodoDeLocacao().toMinutes() / 60.0);
+            valorPagamentoBasico += horas * valorPorHora;
+        } else {
+            double dias = Math.ceil((double) calcularPeriodoDeLocacao().toMinutes() / 1440);
+            valorPagamentoBasico += dias * valorDiario;
         }
-        return null;
+        return valorPagamentoBasico;
+    }
+
+    double valorFinal = 0;
+
+    public Double calcularValorImposto() {
+        if (valorPagamentoBasico <= 100) {
+            valorFinal = valorPagamentoBasico + (valorPagamentoBasico * 0.2);
+        } else {
+            valorFinal = valorPagamentoBasico + (valorPagamentoBasico * 0.15);
+        }
+        return valorFinal;
+    }
+
+    double totalImposto = 0;
+
+    public Double totalImposto() {
+        if (valorPagamentoBasico <= 100) {
+            totalImposto = valorPagamentoBasico * 0.2;
+        } else {
+            totalImposto = valorPagamentoBasico * 0.15;
+        }
+        return totalImposto;
     }
 
 

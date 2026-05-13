@@ -2,9 +2,12 @@ package model.interfaces;
 
 import java.time.Duration;
 
-interface Calculos{
+public interface Calculos {
     Duration calcularPeriodoDeLocacao();
-    Double calcularPagamentoPorHora();
-    Double calcularPagamentoDiario();
+
+    Double calcularPagamento();
+
     Double calcularValorImposto();
+
+    Double totalImposto();
 }
