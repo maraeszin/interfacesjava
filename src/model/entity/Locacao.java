@@ -51,7 +51,7 @@ public class Locacao implements Calculos {
     double valorPagamentoBasico = 0;
 
     public Double calcularPagamento() {
-        if (calcularPeriodoDeLocacao().toHours() < 24) {
+        if (calcularPeriodoDeLocacao().toHours() <= 12) {
             double horas = Math.ceil(calcularPeriodoDeLocacao().toMinutes() / 60.0);
             valorPagamentoBasico += horas * valorPorHora;
         } else {
